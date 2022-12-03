@@ -16,9 +16,5 @@ def getMaxCals():
 
 #part 2
 
-def main():
-    print("Part 1: ", getMaxCals()[0])
-    print("Part 2: ", sum(getMaxCals()[0:3]))
-
-if __name__ == '__main__':
-    main()
+print("Part 1: ", getMaxCals()[0])
+print("Part 2: ", sum(getMaxCals()[0:3]))
