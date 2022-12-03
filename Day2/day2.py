@@ -9,6 +9,9 @@ class Move:
             "X": ["Rock", 1],
             "Y": ["Paper",2],
             "Z": ["Scissors",3],
+            "Rock" : ["Rock", 1],
+            "Paper" : ["Paper",2],
+            "Scissors" : ["Scissors",3],
         }
         self.move = switcher.get(move)[0]
         self.movePts = switcher.get(move)[1]
@@ -16,7 +19,7 @@ class Move:
     def __str__(self):
         return f"Move Made: {self.move}, Move Points: {self.movePts}, Wins: {self.findWin().move}, Loses: {self.findLoss().move}, Draws: {self.findDraw().move}"
     
-    # Returns pts for self versus antoerh Move 
+    # Returns pts for self versus another Move 
     def versus(self,oppMove):
         if self.findWin().move == oppMove.move:
             return 6
@@ -29,21 +32,21 @@ class Move:
     def findWin(self):
         match self.move:
             case "Rock":
-                return Move("C")
+                return Move("Scissors")
             case "Scissors":
-                return Move("B")
+                return Move("Paper")
             case "Paper":
-                return Move("A")
+                return Move("Rock")
 
     # Creates a Move that will win to self
     def findLoss(self):
         match self.move:
             case "Rock":
-                return Move("B")
+                return Move("Paper")
             case "Scissors":
-                return Move("A")
+                return Move("Rock")
             case "Paper":
-                return Move("C")
+                return Move("Scissors")
     
     #return a Move that will darw to self
     def findDraw(self):
@@ -133,39 +136,21 @@ def strategyGuideObjs(path):
 def needsToEnd(path):
     score = []
     for line in loadData(path):
+        roundPts = 0
         oppMove = Move(line.split()[0])
+        roundResult = line.split()[1]
+        myMove = None
+        match roundResult:
+            case "X":
+                myMove = oppMove.findWin()
+            case "Y":
+                myMove = oppMove.findDraw()
+            case "Z":
+                myMove = oppMove.findLoss()
+        score.append(myMove.movePts + myMove.versus(oppMove))
+    return (sum(score))
 
-        pass
-    return (score)
+print("Part 1 Switch Cases:\t",strategyGuide('Day2/input.txt'))
+print("Part 1 Objects:\t\t",strategyGuideObjs('Day2/input.txt'))
+print("Part 2:\t\t\t",needsToEnd('Day2/input.txt'))
 
-print("Part 1:",strategyGuide('Day2/input.txt'))
-print("Part 1:",strategyGuideObjs('Day2/input.txt'))
-print("Part 2:",needsToEnd('Day2/test.txt'))
-
-
-
-
-
-# def determineMove(oppMove, result):
-#     score = 0
-#     match result:
-#         case "X":
-#             score = 0
-#             match oppMove:
-#                 case "A":
-#                     score = score + 
-#                 case "B":
-#                 case "C":
-#         case "Y":
-#             score = 3
-#             match oppMove:
-#                 case "A":
-#                 case "B":
-#                 case "C":
-#         case "Z":
-#             score = 6
-#             match oppMove:
-#                 case "A":
-#                 case "B":
-#                 case "C":
-#     return score
