@@ -1,6 +1,5 @@
 import os
 
-
 def loadData(path):
     with open(path,'r') as f:
         f_contents = f.read().splitlines()
@@ -23,20 +22,16 @@ class ElfPair:
     def rangeOverlap(self):
         return self.elfA.intersection(self.elfB)
 
-
 # Part 1
 def fullContain(path):
     f = loadData(path)
     total = 0
     for line in f:
-        ranges = line.split(",")
-        pair = None
-        for i in range(0,len(ranges),2):
-            a = Elf(int(ranges[i].split("-")[0]),int(ranges[i].split("-")[1]))
-            b = Elf(int(ranges[i+1].split("-")[0]),int(ranges[i+1].split("-")[1]))
-            pair = ElfPair(a,b)
-        
-        total = total + 1 if pair.fullOverlap else total
+        #Split the comma seperated string into a list, take the two elements and split the numbers by '-'
+        #Create 2 Elf objects to send to create an ElfPair object 
+        a = Elf(int(line.split(",")[0].split("-")[0]),int(line.split(",")[0].split("-")[1]))
+        b = Elf(int(line.split(",")[1].split("-")[0]),int(line.split(",")[1].split("-")[1]))
+        total = total + 1 if ElfPair(a,b).fullOverlap else total
     print(total)
 
 # Part 2
@@ -44,13 +39,9 @@ def totalOverlaps(path):
     f = loadData(path)
     total = 0
     for line in f:
-        ranges = line.split(",")
-        pair = None
-        for i in range(0,len(ranges),2):
-            a = Elf(int(ranges[i].split("-")[0]),int(ranges[i].split("-")[1]))
-            b = Elf(int(ranges[i+1].split("-")[0]),int(ranges[i+1].split("-")[1]))
-            pair = ElfPair(a,b)
-        total = total + 1 if len(pair.overlap) > 0 else total
+        a = Elf(int(line.split(",")[0].split("-")[0]),int(line.split(",")[0].split("-")[1]))
+        b = Elf(int(line.split(",")[1].split("-")[0]),int(line.split(",")[1].split("-")[1]))
+        total = total + 1 if len(ElfPair(a,b).overlap) > 0 else total
     print(total)
 
 fullContain('Day4/input.txt')
