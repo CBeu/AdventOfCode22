@@ -5,6 +5,17 @@ def loadData(path):
         f_contents = f.read().splitlines()
         return f_contents
 
+class Group:
+    def __init__(self, r1, r2, r3):
+        self.r1 = r1
+        self.r2 = r2
+        self.r3 = r3
+        self.shared = self.shared()
+    
+    def shared(self):
+        r12 = ''.join(set(self.r1.shared).intersection(self.r2.shared))
+        r123 = ''.join(set(r12).intersection(self.r3.shared))
+
 class Rucksack:
     def __init__(self, items):
         self.firstHalf = items[:len(items)//2]
@@ -26,6 +37,9 @@ class Rucksack:
         for item in items:
             dic[item] = self.getCharPriority(item)
         return dic
+    
+    def __str__(self):
+        return f"shared:{self.sharedComp}"
 
 # Part 1
 def rucksackReorg(path):
@@ -40,5 +54,22 @@ def rucksackReorg(path):
         sums = sums + r.sharedSum
     return sums
 
+# Part 2
+def findBadge(path):
+    f = loadData(path)
+    groups = []
+    group = []
+    i = 0
+    for line in f:
+        if i <=2:
+            i = i + 1
+            group.append(Rucksack(line))
+        else:
+            groups.append(group)
+            group = []
+            i = 0
+    return groups
+
 
 print("Part1:\t",rucksackReorg('Day3/input.txt'))
+print("Part1:\t",findBadge('Day3/test.txt')[0])
